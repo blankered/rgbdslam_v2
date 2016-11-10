@@ -1,15 +1,14 @@
 #ifndef FEATUREADJUSTER_H
 #define FEATUREADJUSTER_H
-#include <opencv2/features2d/features2d.hpp>
+#include <opencv2/features2d.hpp>
 
 /** \brief an detector adjuster optimized for image sequences (video).
  * Use this Adjuster with the DynamicAdaptedFeatureDetector. 
  * It lets you set the increase/decrease factor for faster adaptation.
  * It works for SURF, SIFT, FAST and the adjustable ORB variant "AORB" 
  * which exposes its FAST threshold.
- */
-class DetectorAdjuster: public cv::AdjusterAdapter
-{
+ *
+class DetectorAdjuster: public cv::AdjusterAdapter{
 public:
     ///Initial values are for SURF detector
     DetectorAdjuster(const char* detector_name, double initial_thresh=200.f, double min_thresh=2, double max_thresh=10000, double increase_factor=1.3, double decrease_factor=0.7 );
@@ -18,7 +17,7 @@ public:
     virtual void tooMany(int maxv, int n_detected);
     virtual bool good() const;
 
-    virtual cv::Ptr<cv::AdjusterAdapter> clone() const;
+    virtual cv::Ptr<DetectorAdjuster> clone() const;
 
     void setIncreaseFactor(double new_factor);
     void setDecreaseFactor(double new_factor);
@@ -60,7 +59,7 @@ public:
      *          for the FastAdjuster this can be high, but with Star or Surf this can get time consuming
      *  \param min_features the minimum desired features
      */
-     VideoDynamicAdaptedFeatureDetector( cv::Ptr<cv::AdjusterAdapter> adjuster, int min_features=400, int max_features=500, int max_iters=5);
+     VideoDynamicAdaptedFeatureDetector( cv::Ptr<DetectorAdjuster> adjuster, int min_features=400, int max_features=500, int max_iters=5);
 
     virtual cv::Ptr<StatefulFeatureDetector> clone() const;
     virtual bool empty() const;
@@ -74,7 +73,7 @@ private:
 
     int escape_iters_;
     int min_features_, max_features_;
-    mutable cv::Ptr<cv::AdjusterAdapter> adjuster_;
+    mutable cv::Ptr<DetectorAdjuster> adjuster_;
 };
 
 

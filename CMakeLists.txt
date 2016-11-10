@@ -3,7 +3,7 @@ cmake_policy(SET CMP0003 NEW)
 #########################################################
 ### USER CONFIG #########################################
 #########################################################
-set(USE_SIFT_GPU  1 CACHE BOOL "build with support for siftgpu") 
+set(USE_SIFT_GPU  0 CACHE BOOL "build with support for siftgpu") 
 if (${USE_SIFT_GPU})
   message(STATUS "SiftGPU library will be used")
 else (${USE_SIFT_GPU})
@@ -29,8 +29,8 @@ set(EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/bin)
 set(LIBRARY_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/lib)
 #SET(CMAKE_CXX_FLAGS "-O3 -fPIC -std=c++0x")
 #For annotated profiling with perf: 
-#SET(CMAKE_CXX_FLAGS "-ggdb -O3 -fPIC -std=c++0x")
-SET(CMAKE_CXX_FLAGS "-ggdb -O3 -fPIC")
+SET(CMAKE_CXX_FLAGS "-ggdb -O3 -fPIC -std=c++11")
+#SET(CMAKE_CXX_FLAGS "-ggdb -O3 -fPIC")
 IF (${USE_GL2PS})
   add_definitions(-DGL2PS)
 ENDIF (${USE_GL2PS})
@@ -198,7 +198,7 @@ link_directories(${OpenCV_LIBRARY_DIRS})
 #############################
 # Eigen ####################
 #############################
-find_package(Eigen)
+find_package(Eigen3)
 include_directories(${EIGEN_INCLUDE_DIRS})
 add_definitions(${EIGEN_DEFINITIONS})
 

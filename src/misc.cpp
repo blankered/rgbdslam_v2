@@ -34,9 +34,10 @@
 #include "pcl/common/distances.h"
 
 #if CV_MAJOR_VERSION > 2 || CV_MINOR_VERSION >= 4
-#include "opencv2/core/core.hpp"
-#include "opencv2/features2d/features2d.hpp"
-#include "opencv2/highgui/highgui.hpp"
+#include <opencv2/core.hpp>
+#include <opencv2/features2d.hpp>
+#include <opencv2/highgui.hpp>
+#include <opencv2/imgproc.hpp>
 #endif
 #include "aorb.h"
 
@@ -709,8 +710,8 @@ double errorFunction2(const Eigen::Vector4f& x1,
   static const double raster_cov_y = raster_stddev_y * raster_stddev_y;/*}}}*/
   static const bool use_error_shortcut = true;//ParameterServer::instance()->get<bool>("use_error_shortcut");
 
-  bool nan1 = isnan(x1(2));
-  bool nan2 = isnan(x2(2));
+  bool nan1 = std::isnan(x1(2));
+  bool nan2 = std::isnan(x2(2));
   if(nan1||nan2){
     //TODO: Handle Features with NaN, by reporting the reprojection error
     return std::numeric_limits<double>::max();
@@ -752,7 +753,7 @@ double errorFunction2(const Eigen::Vector4f& x1,
 
   // Δμ⁽²⁾ =  μ₁⁽²⁾ - μ₂⁽²⁾
   Eigen::Vector3d delta_mu_in_frame_2 = mu_1_in_frame_2 - mu_2;
-  if(isnan(delta_mu_in_frame_2(2))){
+  if(std::isnan(delta_mu_in_frame_2(2))){
     ROS_ERROR("Unexpected NaN");
     return std::numeric_limits<double>::max();
   }
